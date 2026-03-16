@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>온밸류 — 이 기업 지금이라도 사도 될까?</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  /*
+   * 60-30-10 COLOR SYSTEM
+   * 60% → #f7f5f0 warm white (배경)
+   * 30% → #1a2f1f deep green / #1a1a2e navy (브랜드 구조색)
+   * 10% → #c8102e red (강조, CTA만)
+   *
+   * 보조: teal/gold → 카드 내부에만 제한 사용
+   */
+
+  :root {
+    /* 60% — 배경 */
+    --bg:        #f7f5f0;
+    --bg-card:   #ffffff;
+    --bg-mid:    #eeeae3;
+    --bg-bdr:    #ddd9d1;
+
+    /* 30% — 브랜드 구조색 */
+    --green:     #1a2f1f;
+    --navy:      #1a1a2e;
+    --text-1:    #1a1a2e;
+    --text-2:    #4a4a5a;
+    --text-3:    #888888;
+
+    /* 10% — 강조 (CTA, 핵심 포인트만) */
+    --red:       #c8102e;
+    --red-bg:    #fff5f6;
+    --red-bdr:   #f5c6cc;
+
+    /* 카드 내부 보조색 */
+    --teal:      #0f6e56;
+    --teal-bg:   #eaf5f1;
+    --teal-bdr:  #b0ddd3;
+    --gold:      #8a6e1e;
+    --gold-bg:   #faf5e4;
+    --gold-bdr:  #d9c880;
+
+    --white: #ffffff;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.8;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── 히어로 (30% 구조색) ─── */
+  .hero {
+    background: var(--bg);
+    border-bottom: 1px solid var(--bg-bdr);
+    padding: 72px 28px 64px;
+    text-align: center;
+  }
+  .hero-brand {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 22px;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(200,16,46,0.1);
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+  .hero-title {
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 900;
+    color: var(--text-1);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+    word-break: keep-all;
+    margin-bottom: 18px;
+  }
+  .hero-title .accent { color: var(--red); }
+  .hero-sub {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-2);
+    word-break: keep-all;
+    line-height: 1.7;
+  }
+
+  /* ─── 섹션 (60% 배경) ─── */
+  .section {
+    padding: 64px 28px;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red); /* 10% — 섹션 레이블만 레드 */
+    margin-bottom: 10px;
+  }
+  .title {
+    font-size: clamp(21px, 3.5vw, 29px);
+    font-weight: 900;
+    color: var(--text-1);
+    line-height: 1.38;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+    margin-bottom: 22px;
+  }
+  .body {
+    font-size: 16px;
+    color: var(--text-2);
+    line-height: 1.95;
+    word-break: keep-all;
+  }
+  .divider { height: 1px; background: var(--bg-bdr); }
+
+  /* ─── 인용 박스 ─── */
+  .quote {
+    border-left: 3px solid var(--red);
+    background: var(--red-bg);
+    border-radius: 0 12px 12px 0;
+    padding: 24px 28px;
+    margin: 24px 0;
+    width: 100%;
+  }
+  .quote p {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-1);
+    line-height: 1.65;
+    word-break: keep-all;
+    margin-bottom: 10px;
+  }
+  .quote p:last-child { margin-bottom: 0; }
+
+  /* ─── 패턴 ─── */
+  .pattern {
+    display: flex;
+    margin: 28px 0;
+    border: 1.5px solid var(--bg-bdr);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-card);
+  }
+  .pitem {
+    flex: 1;
+    padding: 24px 12px;
+    text-align: center;
+    border-right: 1.5px solid var(--bg-bdr);
+  }
+  .pitem:last-child { border-right: none; }
+  .pitem .icon { font-size: 24px; display: block; margin-bottom: 10px; }
+  .pitem .ptitle {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red); /* 10% */
+    margin-bottom: 5px;
+  }
+  .pitem .pdesc {
+    font-size: 12px;
+    color: var(--text-3);
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+
+  /* ─── 인포 박스 ─── */
+  .infobox {
+    background: var(--bg-mid);
+    border: 1px solid var(--bg-bdr);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    width: 100%;
+  }
+  .infobox p {
+    font-size: 15px;
+    color: var(--text-2);
+    line-height: 1.95;
+    word-break: keep-all;
+  }
+
+  /* ─── 개념 카드 ─── */
+  .concept-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 28px 0;
+  }
+  .ccard { border-radius: 12px; padding: 22px 18px; }
+  .ccard.teal { background: var(--teal-bg); border: 1.5px solid var(--teal-bdr); }
+  .ccard.gold { background: var(--gold-bg); border: 1.5px solid var(--gold-bdr); }
+  .ctag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .ccard.teal .ctag { background: var(--teal); color: white; }
+  .ccard.gold .ctag { background: var(--gold); color: white; }
+  .ctitle {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text-1);
+    margin-bottom: 10px;
+  }
+  .cbody {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+  .cpoint {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-1);
+    margin-top: 12px;
+  }
+
+  /* ─── 원리 배너 (30% 네이비) ─── */
+  .banner {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 34px 28px;
+    text-align: center;
+    margin: 28px 0;
+    width: 100%;
+  }
+  .blabel {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal-bdr);
+    margin-bottom: 16px;
+  }
+  .btext {
+    font-size: clamp(17px, 2.8vw, 21px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.8;
+    word-break: keep-all;
+  }
+  /* 배너 내 강조도 절제 — 밝은 민트만 */
+  .btext .accent { color: #7dd3b8; }
+
+  /* ─── 서비스 카드 ─── */
+  .scard { border-radius: 14px; padding: 32px 28px; margin: 20px 0; width: 100%; }
+  .scard.teal { background: var(--teal-bg); border: 2px solid var(--teal-bdr); }
+  .scard.gold { background: var(--gold-bg); border: 2px solid var(--gold-bdr); }
+  .badge-plus {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    padding: 0 2px;
+  }
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .badge-row .sbadge { margin-bottom: 0; }
+  .sbadge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 5px 14px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+  }
+  .badge-row + .stitle { margin-top: 0; }
+  .scard.teal .sbadge { background: var(--teal); color: white; }
+  .scard.gold .sbadge { background: var(--gold); color: white; }
+  .stitle {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text-1);
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+    margin-bottom: 24px;
+  }
+
+  /* ─── 체크리스트 ─── */
+  .cklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .cklist li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .ckicon {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .ckicon svg { width: 12px; height: 12px; }
+  .scard.teal .ckicon { background: var(--teal); }
+  .scard.gold .ckicon { background: var(--gold); }
+  .cktitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-1);
+    margin-bottom: 4px;
+    line-height: 1.45;
+    word-break: keep-all;
+  }
+  .ckdesc {
+    font-size: 13px;
+    color: var(--text-3);
+    line-height: 1.65;
+    word-break: keep-all;
+  }
+
+  /* ─── 클로징 (30% 딥그린) ─── */
+  .closing {
+    background: var(--green);
+    padding: 72px 28px;
+    text-align: center;
+    max-width: 100%;
+  }
+  .cred-block {
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 28px 28px;
+    margin: 0 auto 44px;
+    max-width: 100%;
+    text-align: left;
+  }
+  .cred-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 5px 14px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.15);
+    color: var(--white);
+    margin-bottom: 18px;
+  }
+
+  .cred-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cred-list li {
+    font-size: 14px;
+    font-weight: 500;
+    color: #d0e8e0;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+  .cred-list li::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    color: #7dd3b8;
+    font-weight: 900;
+  }
+  .ctitle-main {
+    font-size: clamp(20px, 3.8vw, 27px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.5;
+    word-break: keep-all;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .csub {
+    font-size: 15px;
+    color: #8aaa98;
+    margin-bottom: 44px;
+    word-break: keep-all;
+    line-height: 1.6;
+  }
+
+  /* ─── CTA 버튼 (10% 강조 — 딱 여기만) ─── */
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .btn {
+    display: block;
+    padding: 22px 32px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    word-break: keep-all;
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
+  .btn:active { transform: translateY(-1px); }
+
+  /* 심층 리포트 버튼 — 카드와 같은 민트 */
+  .btn.report-btn {
+    background: var(--teal);
+    color: white;
+    box-shadow: 0 4px 20px rgba(15,110,86,0.45);
+    font-size: 15px;
+  }
+  .btn.report-btn:hover { background: #0d5e48; }
+
+  /* 포트폴리오 버튼 — 카드와 같은 골드 */
+  .btn.premium-btn {
+    background: var(--gold);
+    color: white;
+    box-shadow: 0 4px 20px rgba(138,110,30,0.45);
+    font-size: 15px;
+    border: none;
+  }
+
+  /* 구분선 */
+  .cta-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 4px 0;
+  }
+  .cta-divider::before,
+  .cta-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+  .cta-divider span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    white-space: nowrap;
+    font-weight: 400;
+  }
+
+  .btnsub {
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.8;
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ─── 면책 ─── */
+  .disclaimer {
+    background: #111;
+    padding: 24px;
+    text-align: center;
+    font-size: 11px;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 500px) {
+    .concept-row { grid-template-columns: 1fr; }
+    .pattern { flex-direction: column; }
+    .pitem { border-right: none; border-bottom: 1.5px solid var(--bg-bdr); }
+    .pitem:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── 히어로 ── -->
+<div class="hero">
+  <span class="hero-brand">사업을 소유하는 투자자 · 온밸류</span>
+  <span class="hero-tag">온밸류 구독 안내</span>
+  <h1 class="hero-title">
+    이 기업,<br>
+    지금이라도 사도 될까?<br>
+    <span class="accent">혼자 판단하기<br>어려우시죠?</span>
+  </h1>
+  <p class="hero-sub">이제 혼자 분석하지 않아도 됩니다.</p>
+</div>
+
+<!-- ── 공감 ── -->
+<div class="section">
+  <span class="label">많은 분들이 겪는 이야기</span>
+  <h2 class="title">
+    주식, 시작하고 싶은데<br>
+    막상 뭘 사야 할지 모르겠죠?
+  </h2>
+  <p class="body">유튜브 아무리 봐도 결국 이런 생각만 들어요.</p>
+
+  <div class="quote">
+    <p>"이 회사가 좋다는 건 알겠어.<br>근데 지금 사도 되는 건지 모르겠어."</p>
+    <p>"혹시 내가 고점에서 사서 물리는 건 아닐까?"</p>
+  </div>
+
+  <p class="body">
+    그러다 결국 주가가 살짝 오르기 시작하면<br>
+    <strong>"이제 상승 시작인가보다!"</strong> 하는 급한 마음에<br>
+    그냥 감으로 냅다 사버리죠.<br>
+    그리고 내가 사는 순간부터<br>주가가 내려가기 시작해요.
+  </p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── 패턴 ── -->
+<div class="section">
+  <span class="label">이 패턴이 반복되면</span>
+  <h2 class="title">결국 이렇게 끝나요</h2>
+
+  <div class="pattern">
+    <div class="pitem">
+      <span class="icon">🎲</span>
+      <div class="ptitle">감으로 매수</div>
+      <div class="pdesc">뭔가 좋아보여서<br>그냥 냅다 삼</div>
+    </div>
+    <div class="pitem">
+      <span class="icon">😨</span>
+      <div class="ptitle">공포에 매도</div>
+      <div class="pdesc">왜 샀는지 모르니까<br>조금만 떨어져도 팜</div>
+    </div>
+    <div class="pitem">
+      <span class="icon">🏦</span>
+      <div class="ptitle">다시 예적금으로</div>
+      <div class="pdesc">"나는 부자 되긴<br>글렀나봐" 포기</div>
+    </div>
+  </div>
+
+  <div class="infobox">
+    <p>
+      월급만으론 부족하다는 걸 알아서 주식을 시작했죠.<br>
+      근데 결과는 늘 똑같아요.<br><br>
+      벌 때는 운으로 조금 벌고, 잃을 때는 크게 잃고.<br>
+      결국 이자 2~3%짜리 예적금으로 다시 돌아가죠.<br><br>
+      그렇게 <strong>"나는 부자 되긴 글렀나봐"</strong> 하면서 포기하게 되죠.<br>
+      근데 그 갈증은 사라지지 않아요.
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── 프레임 ── -->
+<div class="section">
+  <span class="label">왜 이 패턴이 반복될까?</span>
+  <h2 class="title">
+    이유는 딱 하나에요.<br>
+    가치와 가격을<br>
+    구분하지 못해서에요.
+  </h2>
+  <p class="body" style="margin-bottom:24px">
+    많은 분들이 이걸 헷갈려요.<br>
+    <strong>좋은 기업</strong>과 <strong>좋은 주식</strong>은 달라요.
+  </p>
+
+  <div class="concept-row">
+    <div class="ccard teal">
+      <span class="ctag">가치</span>
+      <div class="ctitle">좋은 기업</div>
+      <div class="cbody">
+        사업 자체가 훌륭한 회사.<br><br>
+        돈 잘 벌고,<br>
+        경쟁자가 못 따라오고,<br>
+        10년 후에도 살아남는 회사.
+      </div>
+      <div class="cpoint">→ 가치만 좋다고 끝이 아니에요</div>
+    </div>
+    <div class="ccard gold">
+      <span class="ctag">가격</span>
+      <div class="ctitle">좋은 주식</div>
+      <div class="cbody">
+        좋은 기업인데<br>
+        지금 가격도 적당한 것.<br><br>
+        아무리 좋은 회사도<br>
+        너무 비쌀 때 사면<br>
+        돈을 잃을 수 있어요.
+      </div>
+      <div class="cpoint">→ 가치 있는 기업을, 좋은 가격에</div>
+    </div>
+  </div>
+
+  <div class="banner">
+    <span class="blabel">투자의 원리</span>
+    <div class="btext">
+      가치와 가격,<br>
+      두 기준을 통과한 기업에<br>
+      월급을 꾸준히 옮겨두는 것.<br><br>
+      그게 부자가 되는<br>
+      <span class="accent">가장 확실한 방법</span>이에요.
+    </div>
+  </div>
+
+  <p class="body">
+    근데 이 기업이 정말 좋은 기업인지,<br>
+    너무 고점에서 사는 건 아닌지<br>
+    이 두 가지를 <strong>혼자 판단하는 게 가장 어렵죠.</strong><br><br>
+    가치 판단은 사업 구조를 깊이 이해해야 하고,<br>
+    가격 판단은 사업을 바탕으로<br>
+    숫자를 계산하고 비교해야 해요.<br>
+    이걸 혼자 하려면 공부만 몇 년이에요.
+  </p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── 서비스 ── -->
+<div class="section">
+  <span class="label">9년차 가치투자자 온밸류가 직접 분석해드립니다</span>
+  <h2 class="title">
+    이 주식,<br>
+    지금 사도 되는지 분석해드려요.
+  </h2>
+
+  <div class="scard teal">
+    <span class="sbadge">온밸류 심층 리포트</span>
+    <div class="stitle">
+      이 기업,<br>
+      살 만한지 직접 분석해드려요
+    </div>
+    <ul class="cklist">
+      <li>
+        <span class="ckicon">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9.5L10 2.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <div class="cktitle">이 사업, 진짜 좋은 사업인가?</div>
+          <div class="ckdesc">유명하고 좋아 보이는 회사인데<br>막상 주주는 돈을 못 버는 경우가 많아요.<br>왜 그런지, 이 회사는 괜찮은지 분석해드려요.</div>
+        </div>
+      </li>
+      <li>
+        <span class="ckicon">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9.5L10 2.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <div class="cktitle">지금 이 주식, 비싼지 싼지 알려드려요</div>
+          <div class="ckdesc">아무리 좋은 회사도 사도 괜찮을 때가 있고,<br>사면 안 되는 때가 있어요.<br>지금이 어느 시점인지 알려드려요.</div>
+        </div>
+      </li>
+      <li>
+        <span class="ckicon">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9.5L10 2.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <div class="cktitle">분기 실적 발표 때마다 최신 분석 업데이트</div>
+          <div class="ckdesc">이 회사 여전히 좋은지, 달라진 게 있는지<br>매 분기 분석해서 알려드려요.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="scard gold">
+    <div class="badge-row">
+      <span class="sbadge">온밸류 심층 리포트</span>
+      <span class="badge-plus">+</span>
+      <span class="sbadge">온밸류 실제 포트폴리오</span>
+    </div>
+    <div class="stitle">
+      온밸류 심층 리포트 +<br>
+      온밸류 실제 포트폴리오 구독
+    </div>
+    <ul class="cklist">
+      <li>
+        <span class="ckicon">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9.5L10 2.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <div class="cktitle">실제 보유 종목 + 비중 공개</div>
+          <div class="ckdesc">제가 지금 어떤 기업 주식을<br>얼마나 갖고 있는지 그대로 보여드려요.</div>
+        </div>
+      </li>
+      <li>
+        <span class="ckicon">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9.5L10 2.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <div class="cktitle">매수·매도할 때 이유까지</div>
+          <div class="ckdesc">가치와 가격 기준으로<br>왜 그 결정을 했는지 설명드려요.</div>
+        </div>
+      </li>
+      <li>
+        <span class="ckicon">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9.5L10 2.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <div class="cktitle">뉴스 기반 분석 리포트 제공</div>
+          <div class="ckdesc">내가 투자한 기업에 영향을 주는 뉴스가 나왔을 때<br>좋은 뉴스인지 나쁜 뉴스인지, 어떻게 대응해야 하는지<br>분석해서 알려드려요.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ── 클로징 ── -->
+<div class="closing">
+<div style="max-width:620px;margin:0 auto;width:100%;padding:0 28px;box-sizing:border-box">
+  <div class="cred-block">
+    <span class="cred-badge">온밸류 소개</span>
+    <ul class="cred-list">
+      <li>9년차 가치투자자</li>
+      <li>토스 자산 상위 1% 달성</li>
+      <li>VIP자산운용 RA</li>
+      <li>쿼드자산운용 RA</li>
+    </ul>
+  </div>
+
+  <h2 class="ctitle-main">
+    감으로 투자하면 결국 잃어요.<br>
+    월급 외 수입, 이제 제대로 만들어가세요.
+  </h2>
+  <p class="csub">회사에 목매지 않아도 되는 삶,<br>가치투자로 시작할 수 있어요.</p>
+
+  <div class="cta-group">
+    <a href="https://forms.gle/gd8MKSa5xq8ccBM79" target="_blank" class="btn report-btn">
+      온밸류 심층 리포트 구독하기
+      <span class="btnsub">지금 사도 되는지, 명확히 분석해드립니다</span>
+    </a>
+    <div class="cta-divider">
+      <span>한 발 더 앞서가고 싶다면</span>
+    </div>
+    <a href="https://forms.gle/dBNqKGK6Ls24Jyi68" target="_blank" class="btn premium-btn">
+      ✦&nbsp; 온밸류 심층 리포트 + 온밸류 실제 포트폴리오 구독하기
+      <span class="btnsub">월급만으론 부족해요. 자산이 일하게 만드세요.</span>
+    </a>
+  </div>
+</div>
+</div>
+
+<div class="disclaimer">
+  ※ 모든 내용은 투자 권유가 아닙니다. 모든 투자 판단과 책임은 본인에게 있습니다.<br>
+  온밸류 · 사업을 소유하는 투자자
+</div>
+
+</body>
+</html>
