@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>온밸류 — 이 기업 지금이라도 사도 될까?</title>
+<title>온밸류 — 근거 있는 가치투자 구독 서비스</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   /*
@@ -47,6 +47,18 @@
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
+  /* 스크롤 진행바 */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--red);
+    z-index: 9999;
+    transition: width 0.1s linear;
+  }
+
   body {
     font-family: 'Noto Sans KR', sans-serif;
     background: var(--bg);
@@ -58,9 +70,9 @@
 
   /* ─── 히어로 (30% 구조색) ─── */
   .hero {
-    background: var(--bg);
-    border-bottom: 1px solid var(--bg-bdr);
-    padding: 72px 28px 64px;
+    background: var(--bg-mid);
+    border-bottom: 2px solid #c8b8a2;
+    padding: 64px 28px 56px;
     text-align: center;
   }
   .hero-brand {
@@ -84,7 +96,7 @@
     margin-bottom: 24px;
   }
   .hero-title {
-    font-size: clamp(26px, 5vw, 40px);
+    font-size: clamp(32px, 6vw, 46px);
     font-weight: 900;
     color: var(--text-1);
     line-height: 1.3;
@@ -103,7 +115,7 @@
 
   /* ─── 섹션 (60% 배경) ─── */
   .section {
-    padding: 64px 28px;
+    padding: 48px 28px;
     max-width: 620px;
     margin: 0 auto;
   }
@@ -111,9 +123,9 @@
     display: block;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--red); /* 10% — 섹션 레이블만 레드 */
+    color: var(--red);
     margin-bottom: 10px;
   }
   .title {
@@ -128,10 +140,10 @@
   .body {
     font-size: 16px;
     color: var(--text-2);
-    line-height: 1.95;
+    line-height: 1.75;
     word-break: keep-all;
   }
-  .divider { height: 1px; background: var(--bg-bdr); }
+  .divider { height: 1px; background: transparent; }
 
   /* ─── 인용 박스 ─── */
   .quote {
@@ -191,10 +203,18 @@
     margin: 24px 0;
     width: 100%;
   }
+  .ib-p {
+    font-size: 15px;
+    color: var(--text-2);
+    line-height: 1.75;
+    word-break: keep-all;
+    margin-bottom: 14px;
+  }
+  .ib-p:last-child { margin-bottom: 0; }
   .infobox p {
     font-size: 15px;
     color: var(--text-2);
-    line-height: 1.95;
+    line-height: 1.75;
     word-break: keep-all;
   }
 
@@ -241,7 +261,8 @@
 
   /* ─── 원리 배너 (30% 네이비) ─── */
   .banner {
-    background: var(--navy);
+    background: var(--bg-mid);
+    border: 1.5px solid var(--bg-bdr);
     border-radius: 14px;
     padding: 34px 28px;
     text-align: center;
@@ -254,18 +275,18 @@
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--teal-bdr);
+    color: #0a8f72;
     margin-bottom: 16px;
   }
   .btext {
     font-size: clamp(17px, 2.8vw, 21px);
     font-weight: 700;
-    color: var(--white);
+    color: #0d1420;
     line-height: 1.8;
     word-break: keep-all;
   }
   /* 배너 내 강조도 절제 — 밝은 민트만 */
-  .btext .accent { color: #7dd3b8; }
+  .btext .accent { color: #0a8f72; }
 
   /* ─── 서비스 카드 ─── */
   .scard { border-radius: 14px; padding: 32px 28px; margin: 20px 0; width: 100%; }
@@ -315,6 +336,31 @@
     flex-direction: column;
     gap: 20px;
   }
+  .scard-btn {
+    display: block;
+    margin-top: 24px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    word-break: keep-all;
+  }
+  .scard-btn.teal-btn {
+    background: var(--teal);
+    color: white;
+    box-shadow: 0 4px 12px rgba(15,110,86,0.3);
+  }
+  .scard-btn.gold-btn {
+    background: var(--gold);
+    color: white;
+    box-shadow: 0 4px 12px rgba(138,110,30,0.3);
+  }
+  .scard-btn:hover { transform: translateY(-2px); opacity: 0.9; }
   .cklist li {
     display: flex;
     gap: 14px;
@@ -350,8 +396,8 @@
 
   /* ─── 클로징 (30% 딥그린) ─── */
   .closing {
-    background: var(--green);
-    padding: 72px 28px;
+    background: var(--bg-mid);
+    padding: 56px 28px 64px;
     text-align: center;
     max-width: 100%;
   }
@@ -371,8 +417,8 @@
     letter-spacing: 0.1em;
     padding: 5px 14px;
     border-radius: 6px;
-    background: rgba(255,255,255,0.15);
-    color: var(--white);
+    background: var(--teal);
+    color: white;
     margin-bottom: 18px;
   }
 
@@ -385,7 +431,7 @@
   .cred-list li {
     font-size: 14px;
     font-weight: 500;
-    color: #d0e8e0;
+    color: var(--text-2);
     padding-left: 14px;
     position: relative;
     line-height: 1.5;
@@ -395,13 +441,22 @@
     content: "·";
     position: absolute;
     left: 0;
-    color: #7dd3b8;
+    color: var(--teal);
     font-weight: 900;
+  }
+  .closing-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--teal);
+    display: block;
+    margin-bottom: 10px;
   }
   .ctitle-main {
     font-size: clamp(20px, 3.8vw, 27px);
     font-weight: 900;
-    color: var(--white);
+    color: var(--text-1);
     line-height: 1.5;
     word-break: keep-all;
     margin-bottom: 12px;
@@ -409,7 +464,7 @@
   }
   .csub {
     font-size: 15px;
-    color: #8aaa98;
+    color: var(--text-2);
     margin-bottom: 44px;
     word-break: keep-all;
     line-height: 1.6;
@@ -436,15 +491,16 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     word-break: keep-all;
   }
-  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
+  .btn:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.22); }
   .btn:active { transform: translateY(-1px); }
 
   /* 심층 리포트 버튼 — 카드와 같은 민트 */
   .btn.report-btn {
     background: var(--teal);
     color: white;
-    box-shadow: 0 4px 20px rgba(15,110,86,0.45);
-    font-size: 15px;
+    box-shadow: 0 6px 24px rgba(15,110,86,0.5);
+    font-size: 16px;
+    letter-spacing: -0.01em;
   }
   .btn.report-btn:hover { background: #0d5e48; }
 
@@ -452,9 +508,10 @@
   .btn.premium-btn {
     background: var(--gold);
     color: white;
-    box-shadow: 0 4px 20px rgba(138,110,30,0.45);
-    font-size: 15px;
+    box-shadow: 0 6px 24px rgba(138,110,30,0.5);
+    font-size: 16px;
     border: none;
+    letter-spacing: -0.01em;
   }
 
   /* 구분선 */
@@ -469,11 +526,11 @@
     content: "";
     flex: 1;
     height: 1px;
-    background: rgba(255,255,255,0.15);
+    background: var(--bg-bdr);
   }
   .cta-divider span {
     font-size: 12px;
-    color: rgba(255,255,255,0.4);
+    color: var(--text-3);
     white-space: nowrap;
     font-weight: 400;
   }
@@ -496,31 +553,152 @@
     line-height: 1.8;
   }
 
+  .cred-card {
+    background: var(--white);
+    border: 1.5px solid var(--bg-bdr);
+    border-radius: 12px;
+    padding: 20px 0;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0;
+  }
+  .cred-item + .cred-item {
+    border-left: 1px solid var(--bg-bdr);
+  }
+  .cred-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+  .cred-num {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--text-1);
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+    text-align: center;
+  }
+  .cred-txt {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-3);
+    word-break: keep-all;
+    text-align: center;
+  }
+  .cred-divline {
+    width: 1px;
+    height: 32px;
+    background: var(--bg-bdr);
+    flex-shrink: 0;
+  }
+  .price-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background: var(--white);
+    border: 1.5px solid var(--bg-bdr);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .price-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    text-align: center;
+  }
+  .price-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    background: var(--teal);
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+  .price-badge.premium { background: var(--gold); }
+  .price-amount {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text-1);
+    letter-spacing: -0.03em;
+  }
+  .price-sub {
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 400;
+  }
+  .price-divline {
+    width: 1px;
+    height: 48px;
+    background: var(--bg-bdr);
+    flex-shrink: 0;
+    margin: 0 12px;
+  }
   @media (max-width: 500px) {
     .concept-row { grid-template-columns: 1fr; }
     .pattern { flex-direction: column; }
     .pitem { border-right: none; border-bottom: 1.5px solid var(--bg-bdr); }
     .pitem:last-child { border-bottom: none; }
+    .cred-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 1fr;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    .cred-item {
+      padding: 16px 8px;
+      border-right: 1px solid var(--bg-bdr);
+      border-bottom: 1px solid var(--bg-bdr);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .cred-item:nth-child(2n) { border-right: none; }
+    .cred-item:nth-child(3),
+    .cred-item:nth-child(4) { border-bottom: none; }
+    .price-info { flex-direction: column; gap: 16px; }
+    .price-divline { width: 100%; height: 1px; margin: 0; }
   }
 </style>
 </head>
 <body>
 
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<script>
+  window.addEventListener('scroll', function() {
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var progress = (scrollTop / docHeight) * 100;
+    document.getElementById('scrollProgress').style.width = progress + '%';
+  });
+</script>
+
 <!-- ── 히어로 ── -->
 <div class="hero">
   <span class="hero-brand">사업을 소유하는 투자자 · 온밸류</span>
-  <span class="hero-tag">온밸류 구독 안내</span>
   <h1 class="hero-title">
-    이 기업,<br>
-    지금이라도 사도 될까?<br>
-    <span class="accent">혼자 판단하기<br>어려우시죠?</span>
+    이 주식,<br>
+    <span class="accent">지금 사도 될까요?</span>
   </h1>
-  <p class="hero-sub">이제 혼자 분석하지 않아도 됩니다.</p>
+  <p class="hero-sub">혼자 판단하지 않아도 됩니다. 온밸류가 분석해드려요.</p>
 </div>
 
 <!-- ── 공감 ── -->
 <div class="section">
-  <span class="label">많은 분들이 겪는 이야기</span>
+  <span class="label">혹시 이런 경험 있으세요?</span>
   <h2 class="title">
     주식, 시작하고 싶은데<br>
     막상 뭘 사야 할지 모르겠죠?
@@ -566,14 +744,9 @@
   </div>
 
   <div class="infobox">
-    <p>
-      월급만으론 부족하다는 걸 알아서 주식을 시작했죠.<br>
-      근데 결과는 늘 똑같아요.<br><br>
-      벌 때는 운으로 조금 벌고, 잃을 때는 크게 잃고.<br>
-      결국 이자 2~3%짜리 예적금으로 다시 돌아가죠.<br><br>
-      그렇게 <strong>"나는 부자 되긴 글렀나봐"</strong> 하면서 포기하게 되죠.<br>
-      근데 그 갈증은 사라지지 않아요.
-    </p>
+    <p class="ib-p">월급만으론 부족하다는 걸 알아서 주식을 시작했죠.<br>근데 결과는 늘 똑같아요.</p>
+    <p class="ib-p">벌 때는 운으로 조금 벌고, 잃을 때는 크게 잃고.<br>결국 이자 2~3%짜리 예적금으로 다시 돌아가죠.</p>
+    <p class="ib-p">그렇게 <strong>"나는 부자 되긴 글렀나봐"</strong> 하면서 포기하게 되죠.<br>하지만 <strong>자산을 불리고 싶은 마음은 사라지지 않아요.</strong></p>
   </div>
 </div>
 
@@ -581,14 +754,14 @@
 
 <!-- ── 프레임 ── -->
 <div class="section">
-  <span class="label">왜 이 패턴이 반복될까?</span>
   <h2 class="title">
+    주식으로 돈을 벌지 못하는<br>
     이유는 딱 하나에요.<br>
     가치와 가격을<br>
     구분하지 못해서에요.
   </h2>
   <p class="body" style="margin-bottom:24px">
-    많은 분들이 이걸 헷갈려요.<br>
+    사실 이걸 헷갈리는 게 당연해요.<br>
     <strong>좋은 기업</strong>과 <strong>좋은 주식</strong>은 달라요.
   </p>
 
@@ -597,12 +770,13 @@
       <span class="ctag">가치</span>
       <div class="ctitle">좋은 기업</div>
       <div class="cbody">
-        사업 자체가 훌륭한 회사.<br><br>
-        돈 잘 벌고,<br>
+        꾸준히 돈을 잘 벌고,<br>
         경쟁자가 못 따라오고,<br>
-        10년 후에도 살아남는 회사.
+        10년 후에도 살아남는 회사.<br><br>
+        이런 회사가<br>
+        진짜 좋은 기업이에요.
       </div>
-      <div class="cpoint">→ 가치만 좋다고 끝이 아니에요</div>
+      <div class="cpoint">→ 하지만 가치만 좋다고 끝이 아니에요</div>
     </div>
     <div class="ccard gold">
       <span class="ctag">가격</span>
@@ -614,40 +788,32 @@
         너무 비쌀 때 사면<br>
         돈을 잃을 수 있어요.
       </div>
-      <div class="cpoint">→ 가치 있는 기업을, 좋은 가격에</div>
+      <div class="cpoint">→ 좋은 기업을, 좋은 가격에 사야해요</div>
     </div>
   </div>
 
   <div class="banner">
-    <span class="blabel">투자의 원리</span>
     <div class="btext">
-      가치와 가격,<br>
-      두 기준을 통과한 기업에<br>
-      월급을 꾸준히 옮겨두는 것.<br><br>
-      그게 부자가 되는<br>
-      <span class="accent">가장 확실한 방법</span>이에요.
+      결국 투자는 단순해요.<br><br>
+      좋은 기업을 좋은 가격에 사서<br>
+      오래 갖고 있으면 돼요.<br><br>
+      문제는 뭐가 좋은 기업이고,<br>
+      뭐가 좋은 가격인지<br>
+      <span class="accent">판단이 어렵다는 거에요.</span>
     </div>
   </div>
 
-  <p class="body">
-    근데 이 기업이 정말 좋은 기업인지,<br>
-    너무 고점에서 사는 건 아닌지<br>
-    이 두 가지를 <strong>혼자 판단하는 게 가장 어렵죠.</strong><br><br>
-    가치 판단은 사업 구조를 깊이 이해해야 하고,<br>
-    가격 판단은 사업을 바탕으로<br>
-    숫자를 계산하고 비교해야 해요.<br>
-    이걸 혼자 하려면 공부만 몇 년이에요.
-  </p>
+
 </div>
 
 <div class="divider"></div>
 
 <!-- ── 서비스 ── -->
 <div class="section">
-  <span class="label">9년차 가치투자자 온밸류가 직접 분석해드립니다</span>
+  <span class="label">온밸류가 직접 분석해드립니다</span>
   <h2 class="title">
-    이 주식,<br>
-    지금 사도 되는지 분석해드려요.
+    무슨 주식을, 언제 사야 할지<br>
+    온밸류가 분석해드려요.
   </h2>
 
   <div class="scard teal">
@@ -685,6 +851,9 @@
         </div>
       </li>
     </ul>
+    <a href="https://forms.gle/gd8MKSa5xq8ccBM79" target="_blank" rel="noopener noreferrer" class="scard-btn teal-btn">
+      온밸류 심층 리포트 구독하기 →
+    </a>
   </div>
 
   <div class="scard gold">
@@ -703,8 +872,8 @@
           <svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9.5L10 2.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
         <div>
-          <div class="cktitle">실제 보유 종목 + 비중 공개</div>
-          <div class="ckdesc">제가 지금 어떤 기업 주식을<br>얼마나 갖고 있는지 그대로 보여드려요.</div>
+          <div class="cktitle">온밸류가 실제로 투자한 주식을 그대로 볼 수 있어요</div>
+          <div class="ckdesc">어떤 기업에 얼마나 투자하고 있는지<br>숨김 없이 공개해드려요.</div>
         </div>
       </li>
       <li>
@@ -712,8 +881,8 @@
           <svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9.5L10 2.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
         <div>
-          <div class="cktitle">매수·매도할 때 이유까지</div>
-          <div class="ckdesc">가치와 가격 기준으로<br>왜 그 결정을 했는지 설명드려요.</div>
+          <div class="cktitle">언제, 왜 샀는지 팔았는지 이유까지 알려드려요</div>
+          <div class="ckdesc">감이 아니라 가치와 가격 기준으로<br>결정했다는 걸 직접 확인하실 수 있어요.</div>
         </div>
       </li>
       <li>
@@ -726,39 +895,64 @@
         </div>
       </li>
     </ul>
+    <a href="https://forms.gle/dBNqKGK6Ls24Jyi68" target="_blank" rel="noopener noreferrer" class="scard-btn gold-btn">
+      ✦ 온밸류 포트폴리오 구독하기 →
+    </a>
   </div>
 </div>
 
 <!-- ── 클로징 ── -->
 <div class="closing">
 <div style="max-width:620px;margin:0 auto;width:100%;padding:0 28px;box-sizing:border-box">
-  <div class="cred-block">
-    <span class="cred-badge">온밸류 소개</span>
-    <ul class="cred-list">
-      <li>9년차 가치투자자</li>
-      <li>토스 자산 상위 1% 달성</li>
-      <li>VIP자산운용 RA</li>
-      <li>쿼드자산운용 RA</li>
-    </ul>
+  <div class="cred-card">
+    <div class="cred-item">
+      <span class="cred-num">9년차</span>
+      <span class="cred-txt">가치투자자</span>
+    </div>
+    <div class="cred-item">
+      <span class="cred-num">자산 상위 1%</span>
+      <span class="cred-txt">토스 기준</span>
+    </div>
+    <div class="cred-item">
+      <span class="cred-num">VIP자산운용</span>
+      <span class="cred-txt">RA</span>
+    </div>
+    <div class="cred-item">
+      <span class="cred-num">쿼드자산운용</span>
+      <span class="cred-txt">RA</span>
+    </div>
   </div>
 
   <h2 class="ctitle-main">
-    감으로 투자하면 결국 잃어요.<br>
-    월급 외 수입, 이제 제대로 만들어가세요.
+    무슨 주식을, 언제 사야 할지<br>
+    더 이상 혼자 고민하지 마세요.
   </h2>
-  <p class="csub">회사에 목매지 않아도 되는 삶,<br>가치투자로 시작할 수 있어요.</p>
+  <p class="csub">이 기업 살 만한지, 지금 가격이 괜찮은지 — 온밸류가 분석해드립니다.</p>
 
+  <div class="price-info">
+    <div class="price-item">
+      <span class="price-badge">온밸류 심층 리포트</span>
+      <span class="price-amount">60,000원 / 분기</span>
+      <span class="price-sub">연간 200,000원 (17% 할인)</span>
+    </div>
+    <div class="price-divline"></div>
+    <div class="price-item">
+      <span class="price-badge premium">온밸류 포트폴리오</span>
+      <span class="price-amount">80,000원 / 분기</span>
+      <span class="price-sub">연간 270,000원 (16% 할인)</span>
+    </div>
+  </div>
   <div class="cta-group">
-    <a href="https://forms.gle/gd8MKSa5xq8ccBM79" target="_blank" class="btn report-btn">
+    <a href="https://forms.gle/gd8MKSa5xq8ccBM79" target="_blank" rel="noopener noreferrer" class="btn report-btn">
       온밸류 심층 리포트 구독하기
       <span class="btnsub">지금 사도 되는지, 명확히 분석해드립니다</span>
     </a>
     <div class="cta-divider">
       <span>한 발 더 앞서가고 싶다면</span>
     </div>
-    <a href="https://forms.gle/dBNqKGK6Ls24Jyi68" target="_blank" class="btn premium-btn">
-      ✦&nbsp; 온밸류 심층 리포트 + 온밸류 실제 포트폴리오 구독하기
-      <span class="btnsub">월급만으론 부족해요. 자산이 일하게 만드세요.</span>
+    <a href="https://forms.gle/dBNqKGK6Ls24Jyi68" target="_blank" rel="noopener noreferrer" class="btn premium-btn">
+      ✦&nbsp; 온밸류 포트폴리오 구독하기
+      <span class="btnsub">심층 리포트 포함 · 실제 투자 내역 공개</span>
     </a>
   </div>
 </div>
